@@ -1,0 +1,169 @@
+/**
+ * ============================================================================
+ * ModalForm Stilleri (Shared Modal Form Styles)
+ * ============================================================================
+ *
+ * MİMARİ KARAR & SENIOR DEVELOPER NOTU:
+ *
+ * Bu stil dosyası uygulamadaki iki modal form tarafından ortaklaşa kullanılır:
+ * 1. `AuthCredentialsModal`: GREEN-API kimlik bilgilerini (idInstance, apiTokenInstance, apiUrl) alır.
+ * 2. `NewChatModal`: WhatsApp telefon numarası (+994...) ve kişi adı alır.
+ *
+ * Neden Ayrı Bileşenlere (ModalActions / ModalFooter / FormField) Bölünmedi?
+ * - Aşırı Bölme (Over-Splitting / Premature Abstraction) Önleme:
+ *   Küçük ölçekli ve az sayıda form içeren projelerde her buton veya alan grubunu
+ *   mikro-bileşenlere bölmek kod okunabilirliğini azaltır, prop aktarımını (prop drilling)
+ *   ve test karmaşıklığını artırır.
+ * - Doğrudan Kontrol (Direct JSX Control):
+ *   Her form kendi doğrulama (validation), klavye (Enter) ve state mantığına doğrudan
+ *   sahiptir. Tasarım tutarlılığı (Design System Consistency) ise bu ortak CSS modülü
+ *   sayesinde %100 korunur.
+ * ============================================================================
+ */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.input {
+  padding: 10px 14px;
+  font-size: 14px;
+  background-color: var(--bg-input-field);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  transition: border-color 0.2s ease;
+}
+
+.input:focus {
+  border-color: var(--accent-cyan);
+}
+
+/* Hatalı input durumunda odaklanılmış olsa dahi kırmızı çerçeveyi koru */
+.input.inputError {
+  border-color: var(--danger);
+}
+
+.errorText {
+  font-size: 12px;
+  color: var(--danger);
+}
+
+.helperText {
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.cancelBtn {
+  padding: 8px 16px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  transition: background-color 0.15s ease;
+}
+
+.cancelBtn:hover {
+  background-color: var(--item-hover);
+}
+
+.submitBtn {
+  padding: 8px 20px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: var(--accent-cyan);
+  border-radius: 8px;
+  transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+.submitBtn:hover {
+  background-color: var(--accent-hover);
+}
+
+.submitBtn:active {
+  transform: scale(0.98);
+}
+
+/* International Phone Input Integration */
+.phoneInputContainer {
+  display: flex !important;
+  width: 100% !important;
+  --react-international-phone-height: 42px;
+  --react-international-phone-border-radius: 10px;
+  --react-international-phone-border-color: var(--border-color);
+  --react-international-phone-background-color: var(--bg-input-field);
+  --react-international-phone-text-color: var(--text-primary);
+  --react-international-phone-selected-dropdown-item-background-color: var(--item-active);
+  --react-international-phone-selected-dropdown-item-text-color: var(--text-primary);
+  --react-international-phone-dropdown-item-background-color: var(--bg-modal);
+  --react-international-phone-dropdown-item-text-color: var(--text-primary);
+  --react-international-phone-dropdown-item-dial-code-color: var(--text-secondary);
+}
+
+.phoneInputCountryButton {
+  background-color: var(--bg-input-field) !important;
+  border: 1px solid var(--border-color) !important;
+  border-right: none !important;
+  border-top-left-radius: 10px !important;
+  border-bottom-left-radius: 10px !important;
+  padding: 0 10px !important;
+  transition: background-color 0.15s ease;
+}
+
+.phoneInputCountryButton:hover {
+  background-color: var(--item-active) !important;
+}
+
+.phoneInputField {
+  flex: 1 !important;
+  width: 100% !important;
+  height: 42px !important;
+  padding: 10px 14px !important;
+  font-size: 14px !important;
+  background-color: var(--bg-input-field) !important;
+  border: 1px solid var(--border-color) !important;
+  border-top-right-radius: 10px !important;
+  border-bottom-right-radius: 10px !important;
+  color: var(--text-primary) !important;
+  transition: border-color 0.2s ease;
+}
+
+.phoneInputField:focus {
+  border-color: var(--accent-cyan) !important;
+}
+
+.phoneInputDropdown {
+  background-color: var(--bg-modal) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+  color: var(--text-primary) !important;
+  z-index: 1000 !important;
+  max-height: 220px !important;
+  scrollbar-width: thin;
+}
+

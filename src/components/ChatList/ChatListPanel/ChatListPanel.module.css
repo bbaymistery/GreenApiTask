@@ -1,0 +1,129 @@
+.panel {
+  width: 100%;
+  height: 100vh;
+  background-color: var(--bg-sidebar-chats);
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  user-select: none;
+}
+
+
+.topBar {
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.searchWrapper {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: var(--bg-input-field);
+  border-radius: 20px;
+  padding: 0 12px;
+  height: 38px;
+  border: 1px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.searchWrapper:focus-within {
+  border-color: var(--accent-cyan);
+}
+
+.searchIcon {
+  color: var(--text-secondary);
+  margin-right: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.searchInput {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: var(--text-primary);
+  font-size: 14px;
+  outline: none;
+}
+
+.searchInput::placeholder {
+  color: var(--text-secondary);
+}
+
+.newChatButton,
+.desktopNewChatButton {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background-color: var(--accent-cyan);
+  color: #ffffff;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.15s ease, background-color 0.15s ease;
+  flex-shrink: 0;
+}
+
+.newChatButton:hover,
+.desktopNewChatButton:hover {
+  background-color: var(--accent-hover);
+  transform: scale(1.05);
+}
+
+.newChatButton:active,
+.desktopNewChatButton:active {
+  transform: scale(0.95);
+}
+
+.mobileHeader {
+  display: none;
+}
+
+.chatList {
+  flex: 1;
+  overflow-y: auto;
+  padding: 6px 0;
+}
+
+.emptyState {
+  padding: 32px 16px;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+/* ==========================================================================
+   Mobile Chat List Styles (web.max.ru Mobile Design)
+   ========================================================================== */
+@media (max-width: 768px) {
+  .mobileHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 16px 6px;
+  }
+
+  .mobileTitle {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+    letter-spacing: -0.3px;
+  }
+
+  .desktopNewChatButton {
+    display: none;
+  }
+
+  .topBar {
+    padding: 6px 16px 12px;
+    border-bottom: none;
+  }
+}

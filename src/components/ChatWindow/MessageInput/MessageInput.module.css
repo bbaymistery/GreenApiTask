@@ -1,0 +1,158 @@
+.inputBar {
+  padding: 10px 16px;
+  background-color: var(--bg-input-bar);
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+}
+
+.emojiPicker {
+  position: absolute;
+  bottom: 64px;
+  left: 16px;
+  background-color: var(--bg-modal);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 10px;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
+  z-index: 100;
+  animation: fadeIn 0.15s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.emojiBtn {
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.1s ease, background-color 0.15s ease;
+}
+
+.emojiBtn:hover {
+  background-color: var(--item-hover);
+  transform: scale(1.2);
+}
+
+.iconBtn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 50%;
+  transition: color 0.15s ease, background-color 0.15s ease;
+  flex-shrink: 0;
+}
+
+.iconBtn:hover,
+.iconBtn.active {
+  color: var(--accent-cyan);
+  background-color: var(--item-hover);
+}
+
+.inputWrapper {
+  flex: 1;
+  background-color: var(--bg-input-field);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  border: 1px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.inputWrapper:focus-within {
+  border-color: var(--accent-cyan);
+}
+
+.textInput {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-size: 14.5px;
+  padding: 10px 0;
+  line-height: 1.4;
+}
+
+.textInput::placeholder {
+  color: var(--text-secondary);
+}
+
+.sendBtn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--accent-cyan);
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.15s ease, transform 0.1s ease, opacity 0.15s ease;
+  flex-shrink: 0;
+}
+
+.sendBtn:hover:not(:disabled) {
+  background-color: var(--accent-hover);
+  transform: scale(1.05);
+}
+
+.sendBtn:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.sendBtn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ==========================================================================
+   Mobile Input Bar Styles
+   ========================================================================== */
+@media (max-width: 768px) {
+  .inputBar {
+    padding: 8px 10px;
+    gap: 6px;
+  }
+
+  .emojiPicker {
+    left: 8px;
+    right: 8px;
+    bottom: 58px;
+    grid-template-columns: repeat(7, 1fr);
+  }
+
+  .sendBtn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .iconBtn {
+    padding: 6px;
+  }
+
+  .textInput {
+    font-size: 14px;
+    padding: 8px 0;
+  }
+}

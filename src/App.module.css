@@ -1,0 +1,87 @@
+/* ==========================================================================
+   App Container & Responsive Layout - web.max.ru / Telegram Web Architecture
+   ========================================================================== */
+
+.appContainer {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  background-color: var(--bg-app);
+}
+
+.sidebarWrapper {
+  height: 100%;
+  display: flex;
+  flex-shrink: 0;
+  z-index: 20;
+}
+
+.chatListWrapper {
+  width: 360px;
+  min-width: 300px;
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.chatWindowWrapper {
+  flex: 1;
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* ==========================================================================
+   Responsive Breakpoints (Mobile <= 768px)
+   ==========================================================================
+   web.max.ru Mobile Behavior:
+   1. Chat not selected:
+      - ChatWindow is hidden.
+      - ChatList fills the screen with AppSidebar docked at the bottom as Bottom Nav.
+   2. Chat selected:
+      - ChatList and AppSidebar are hidden.
+      - ChatWindow takes full screen (100dvh) with header back button (ArrowLeft).
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .appContainer {
+    flex-direction: column;
+  }
+
+  .sidebarWrapper {
+    order: 2;
+    width: 100%;
+    height: 60px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+
+  .chatListWrapper {
+    order: 1;
+    width: 100%;
+    min-width: 0;
+    flex: 1;
+    height: calc(100vh - 60px);
+    height: calc(100dvh - 60px);
+    overflow: hidden;
+  }
+
+  .chatWindowWrapper {
+    order: 1;
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+  }
+
+  .hiddenOnMobile {
+    display: none !important;
+  }
+}

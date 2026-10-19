@@ -1,0 +1,116 @@
+/* ==========================================================================
+   AppSidebar Styles - web.max.ru Navigation Strip
+   ========================================================================== */
+
+.sidebarNav {
+  width: 68px;
+  min-width: 68px;
+  height: 100%;
+  background-color: var(--bg-sidebar-nav);
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+  user-select: none;
+  z-index: 10;
+}
+
+.topSection, .bottomSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.navButton {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.navButton:hover {
+  background-color: var(--item-hover);
+  color: var(--text-primary);
+}
+
+.navButton.active {
+  color: var(--accent-cyan);
+}
+
+.navLabel {
+  font-size: 10px;
+  margin-top: 3px;
+  font-weight: 500;
+}
+
+.badge {
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  background-color: var(--accent-cyan);
+  color: var(--badge-text);
+  font-size: 10px;
+  font-weight: 700;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+}
+
+/* ==========================================================================
+   Mobile Bottom Navigation Bar (web.max.ru style)
+   ========================================================================== */
+@media (max-width: 768px) {
+  .sidebarNav {
+    width: 100%;
+    min-width: 0;
+    height: 60px;
+    border-right: none;
+    border-top: 1px solid var(--border-color);
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0 6px;
+    background-color: var(--bg-sidebar-nav);
+  }
+
+  .topSection,
+  .bottomSection {
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    gap: 4px;
+    width: 50%;
+  }
+
+  .navButton {
+    flex: 1;
+    width: auto;
+    max-width: 76px;
+    height: 50px;
+    border-radius: 8px;
+  }
+
+  .navLabel {
+    font-size: 11px;
+    margin-top: 2px;
+  }
+
+  .badge {
+    top: 2px;
+    right: 14px;
+  }
+}

@@ -1,0 +1,108 @@
+/**
+ * web.max.ru Color Variables & Theme Tokens
+ * Dark & Light mode definitions extracted from web.max.ru interface
+ */
+
+:root,
+[data-theme="dark"] {
+  --theme: dark;
+
+  /* App Backgrounds */
+  --bg-app: #0e1621;
+  --bg-sidebar-nav: #0e1621;
+  --bg-sidebar-chats: #17212b;
+  --bg-chat-area: #0e1621;
+  --bg-header: #17212b;
+  --bg-input-bar: #17212b;
+  --bg-input-field: #242f3d;
+  --bg-modal: #17212b;
+  --bg-modal-overlay: rgba(0, 0, 0, 0.7);
+  --bg-card: #242f3d;
+
+  /* Chat Bubbles */
+  --bubble-out: #2b5278;
+  --bubble-out-text: #ffffff;
+  --bubble-in: #182533;
+  --bubble-in-text: #f5f5f5;
+  --bubble-time-out: rgba(255, 255, 255, 0.6);
+  --bubble-time-in: #7e8b99;
+
+  /* Typography */
+  --text-primary: #f5f5f5;
+  --text-secondary: #7e8b99;
+  --text-muted: #5e6b78;
+
+  /* Brand & Accents */
+  --accent-blue: #2b7cb5;
+  --accent-cyan: #3390ec;
+  --accent-hover: #2481cc;
+  --accent-active: #1d6fa5;
+  --badge-bg: #3390ec;
+  --badge-text: #ffffff;
+
+  /* Borders & Dividers */
+  --border-color: #242f3d;
+  --border-subtle: rgba(255, 255, 255, 0.06);
+
+  /* Hover & Active States */
+  --item-hover: rgba(255, 255, 255, 0.04);
+  --item-active: #202b36;
+
+  /* Scrollbars */
+  --scrollbar-thumb: rgba(255, 255, 255, 0.15);
+  --scrollbar-thumb-hover: rgba(255, 255, 255, 0.25);
+}
+
+[data-theme="light"] {
+  --theme: light;
+
+  /* App Backgrounds */
+  --bg-app: #8fc2e9;
+  --bg-sidebar-nav: #ffffff;
+  --bg-sidebar-chats: #ffffff;
+  --bg-chat-area: #8fc2e9;
+  --bg-header: #ffffff;
+  --bg-input-bar: #ffffff;
+  --bg-input-field: #f1f5f9;
+  --bg-modal: #ffffff;
+  --bg-modal-overlay: rgba(0, 0, 0, 0.5);
+  --bg-card: #f8fafc;
+
+  /* Chat Bubbles */
+  --bubble-out: #effdde;
+  --bubble-out-text: #000000;
+  --bubble-in: #ffffff;
+  --bubble-in-text: #000000;
+  --bubble-time-out: rgba(0, 0, 0, 0.45);
+  --bubble-time-in: rgba(0, 0, 0, 0.45);
+
+  /* Typography */
+  --text-primary: #111827;
+  --text-secondary: #707579;
+  --text-muted: #94a3b8;
+
+  /* Brand & Accents */
+  --accent-blue: #3390ec;
+  --accent-cyan: #3390ec;
+  --accent-hover: #2682df;
+  --accent-active: #1c74cf;
+  --badge-bg: #3390ec;
+  --badge-text: #ffffff;
+
+  /* Borders & Dividers */
+  --border-color: #e5e7eb;
+  --border-subtle: rgba(0, 0, 0, 0.06);
+
+  /* Hover & Active States */
+  --item-hover: rgba(0, 0, 0, 0.03);
+  --item-active: #e4effa;
+
+  /* Scrollbars */
+  --scrollbar-thumb: rgba(0, 0, 0, 0.15);
+  --scrollbar-thumb-hover: rgba(0, 0, 0, 0.25);
+}
+
+/* Tokens that do not change between themes. */
+:root {
+  --danger: #ef4444;
+}

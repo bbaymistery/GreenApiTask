@@ -1,0 +1,7 @@
+/**
+ * Main Application Stylesheet Entry Point
+ * Imports modular design tokens and reset rules
+ */
+
+@import './styles/variables.css';
+@import './styles/reset.css';
