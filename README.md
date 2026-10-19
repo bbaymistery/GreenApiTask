@@ -150,7 +150,7 @@ src/
 **Vercel** (or Netlify): import the GitHub repo, preset **Vite**, build command `npm run build`, output `dist`.
 Optionally set the environment variables `VITE_GREEN_API_URL`, `VITE_GREEN_ID_INSTANCE`, `VITE_GREEN_API_TOKEN_INSTANCE`; otherwise users enter credentials in Settings.
 
-- Live demo: _https://green-api-task-mu.vercel.app/_
+- Live demo: _https://green-api-task-max-web.netlify.app//_
 - Screenshots / video: _add to `docs/` and link here_
 
 ---
@@ -161,7 +161,7 @@ Optionally set the environment variables `VITE_GREEN_API_URL`, `VITE_GREEN_ID_IN
 
 1. **CV / Portfolio:** [elgun.vercel.app](https://elgun.vercel.app/) *(Telegram contacts included)*
 2. **GitHub Repository:** [bbaymistery/GreenApiTask](https://github.com/bbaymistery/GreenApiTask)
-3. **Live Deployed App:** [green-api-task-mu.vercel.app](https://green-api-task-mu.vercel.app/)
+3. **Live Deployed App:** [green-api-task-max-web.netlify.app](https://green-api-task-max-web.netlify.app//)
 4. **Screenshots / Video Demo:** _[Add your demo video/screenshots link here]_
 5. **Work Format Preference:** Remote 
 6. **Local Run Guide:** See [Section 2: Quick start (local run)](#2-quick-start-local-run) above
