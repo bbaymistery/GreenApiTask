@@ -13,16 +13,16 @@ Built with **React 19**, **TypeScript** and **Vite** as a test assignment for th
 
 The task (`htmls/task.png`) asks for a UI for sending and receiving messages in MAX / WhatsApp / Telegram using GREEN-API.
 
-| # | Requirement | Implementation |
-|---|---|---|
-| 1 | UI for sending and receiving messages | Chat list + conversation window (`src/components/`) |
-| 2 | Use the GREEN-API service | `src/api/greenApiClient.ts` (plain `fetch`, no SDK) |
-| 3 | Text messages only | Text is sent/received; media is shown as a placeholder like `[imageMessage]` |
-| 4 | Take the look of web.max.ru | Sidebar rail, chat list, dark/light theme, message bubbles |
-| 5 | As simple as possible, minimal feature set | Only what the flow below needs (plus search and emoji) |
-| 6 | Send with the **SendMessage** method | `POST /sendMessage` → `sendMessage()` |
-| 7 | Receive with the **HTTP API** (notifications) | `GET /receiveNotification` + `DELETE /deleteNotification` → `useGreenApiPolling` |
-| 8 | React | React 19 |
+| #   | Requirement                                   | Implementation                                                                   |
+| --- | --------------------------------------------- | -------------------------------------------------------------------------------- |
+| 1   | UI for sending and receiving messages         | Chat list + conversation window (`src/components/`)                              |
+| 2   | Use the GREEN-API service                     | `src/api/greenApiClient.ts` (plain `fetch`, no SDK)                              |
+| 3   | Text messages only                            | Text is sent/received; media is shown as a placeholder like `[imageMessage]`     |
+| 4   | Take the look of web.max.ru                   | Sidebar rail, chat list, dark/light theme, message bubbles                       |
+| 5   | As simple as possible, minimal feature set    | Only what the flow below needs (plus search and emoji)                           |
+| 6   | Send with the **SendMessage** method          | `POST /sendMessage` → `sendMessage()`                                            |
+| 7   | Receive with the **HTTP API** (notifications) | `GET /receiveNotification` + `DELETE /deleteNotification` → `useGreenApiPolling` |
+| 8   | React                                         | React 19                                                                         |
 
 ### Expected user flow
 
@@ -42,7 +42,7 @@ The task (`htmls/task.png`) asks for a UI for sending and receiving messages in 
 git clone https://github.com/bbaymistery/task_green_api_message_max_wp.git
 cd task_green_api_message_max_wp
 npm install
-cp .env.example .env     # optional, see below
+cp .env.example    # optional, see below
 npm run dev              # http://localhost:5173
 ```
 
@@ -61,12 +61,12 @@ Note: `VITE_*` variables are embedded in the browser bundle, so a frontend-only 
 
 ### Scripts
 
-| Command | Purpose |
-|---|---|
-| `npm run dev` | Dev server with HMR |
-| `npm run build` | Type-check (`tsc -b`) and production build to `dist/` |
-| `npm run preview` | Serve the production build locally |
-| `npm run lint` | Lint with oxlint |
+| Command           | Purpose                                               |
+| ----------------- | ----------------------------------------------------- |
+| `npm run dev`     | Dev server with HMR                                   |
+| `npm run build`   | Type-check (`tsc -b`) and production build to `dist/` |
+| `npm run preview` | Serve the production build locally                    |
+| `npm run lint`    | Lint with oxlint                                      |
 
 ### GREEN-API instance settings
 
@@ -99,13 +99,13 @@ Design decisions:
 
 ### GREEN-API methods used
 
-| Method | HTTP | Where |
-|---|---|---|
-| `sendMessage` | POST | sending a text message |
-| `receiveNotification` | GET | polling for new messages |
-| `deleteNotification` | DELETE | removing a handled notification from the queue |
-| `getChatHistory` | POST | loading recent messages of an opened chat |
-| `getStateInstance` | GET | available in the API client (authorization check) |
+| Method                | HTTP   | Where                                             |
+| --------------------- | ------ | ------------------------------------------------- |
+| `sendMessage`         | POST   | sending a text message                            |
+| `receiveNotification` | GET    | polling for new messages                          |
+| `deleteNotification`  | DELETE | removing a handled notification from the queue    |
+| `getChatHistory`      | POST   | loading recent messages of an opened chat         |
+| `getStateInstance`    | GET    | available in the API client (authorization check) |
 
 ### Known limitation: GREEN-API Developer plan
 
@@ -157,11 +157,11 @@ Optionally set the environment variables `VITE_GREEN_API_URL`, `VITE_GREEN_ID_IN
 
 ## 6. Submission checklist (hr@green-api.com)
 
-Subject: `Тестовое задание на должность - Фронтенд разработчик React`
+**Subject:** `Тестовое задание на должность - Фронтенд разработчик React`
 
-1. Résumé (PDF, with your Telegram for contact)
-2. GitHub repository link
-3. Local run instructions → section 2 of this file
-4. Link to the deployed service (optional but recommended)
-5. Screenshots / video of the flow
-6. Preferred work format (remote / office)
+1. **CV / Portfolio:** [elgun.vercel.app](https://elgun.vercel.app/) *(Telegram contacts included)*
+2. **GitHub Repository:** [bbaymistery/GreenApiTask](https://github.com/bbaymistery/GreenApiTask)
+3. **Live Deployed App:** [green-api-task-mu.vercel.app](https://green-api-task-mu.vercel.app/)
+4. **Screenshots / Video Demo:** _[Add your demo video/screenshots link here]_
+5. **Work Format Preference:** Remote 
+6. **Local Run Guide:** See [Section 2: Quick start (local run)](#2-quick-start-local-run) above
