@@ -186,3 +186,34 @@ export const getChatHistory = async (credentials: GreenApiCredentials, payload: 
 
   return response.json();
 };
+
+/**
+ * 6. Get Recent Incoming Messages (lastIncomingMessages)
+ *
+ * Fast journal method to sync recent incoming messages across all conversations.
+ *
+ * @param {GreenApiCredentials} credentials - Instance credentials
+ * @param {number} [minutes=2] - Time range in minutes to query
+ * @param {AbortSignal} [signal] - Optional abort signal
+ * @returns {Promise<GreenApiHistoryMessage[]>} List of recent incoming messages
+ */
+export const getLastIncomingMessages = async (credentials: GreenApiCredentials, minutes: number = 2, signal?: AbortSignal): Promise<import('../types').GreenApiIncomingJournalItem[]> => {
+  const url = `${buildApiUrl(credentials, 'lastIncomingMessages')}?minutes=${minutes}`;
+  const response = await fetch(url, { method: 'GET', signal });
+
+  if (!response.ok) {
+    return [];
+  }
+
+  const text = await response.text();
+  if (!text || text === 'null') {
+    return [];
+  }
+
+  try {
+    const data = JSON.parse(text);
+    return Array.isArray(data) ? data : [];
+  } catch {
+    return [];
+  }
+};

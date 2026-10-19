@@ -81,18 +81,28 @@ export const useChats = () => {
    * If unreadDelta is provided, increments the unread badge if the chat is not currently open.
    */
   const updateLastMessage = useCallback((chatId: string, text: string, timestamp: number = Date.now(), unreadDelta: number = 0) => {
-    setChats((prev) =>
-      prev.map((c) => {
+    setChats((prev) => {
+      const target = prev.find((c) => isSameChat(c.id, chatId));
+      if (!target) return prev;
+
+      const isActive = isSameChat(target.id, activeChatIdRef.current);
+      const targetUnread = isActive ? 0 : Math.max(0, target.unreadCount + unreadDelta);
+
+      // Bail out if data is identical: zero re-renders
+      if (target.lastMessage === text && target.lastMessageAt === timestamp && target.unreadCount === targetUnread) {
+        return prev;
+      }
+
+      return prev.map((c) => {
         if (!isSameChat(c.id, chatId)) return c;
-        const isActive = isSameChat(c.id, activeChatIdRef.current);
         return {
           ...c,
           lastMessage: text,
           lastMessageAt: timestamp,
-          unreadCount: isActive ? 0 : Math.max(0, c.unreadCount + unreadDelta),
+          unreadCount: targetUnread,
         };
-      })
-    );
+      });
+    });
   }, []);
 
   /**
@@ -107,14 +117,21 @@ export const useChats = () => {
       const digits = chatId.replace('@c.us', '');
 
       if (existing) {
+        const newUnread = isCurrentlyActive ? 0 : existing.unreadCount + unreadIncrement;
+
+        // Bail out if data is identical: zero re-renders
+        if (existing.lastMessage === text && existing.lastMessageAt === timestamp && existing.unreadCount === newUnread) {
+          return prev;
+        }
+
         return prev.map((c) =>
           isSameChat(c.id, chatId)
             ? {
-                ...c,
-                lastMessage: text,
-                lastMessageAt: timestamp,
-                unreadCount: isCurrentlyActive ? 0 : c.unreadCount + unreadIncrement,
-              }
+              ...c,
+              lastMessage: text,
+              lastMessageAt: timestamp,
+              unreadCount: newUnread,
+            }
             : c
         );
       }

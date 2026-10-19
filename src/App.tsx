@@ -84,8 +84,8 @@ export const App: React.FC = () => {
     pollIntervalMs: POLLING_INTERVAL_MS,
   });
 
-  // Loads the history of the opened chat once
-  useChatSync({ activeChatId, credentials, mergeHistoryMessages, updateLastMessage });
+  // Background chat history and multi-conversation inbound sync
+  useChatSync({ activeChatId, credentials, mergeHistoryMessages, updateLastMessage, onIncomingMessage: handleIncomingMessage, });
 
   // Apply theme attribute to root document element for CSS variables
   useEffect(() => {

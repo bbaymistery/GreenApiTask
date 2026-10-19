@@ -125,3 +125,21 @@ export interface GreenApiHistoryMessage {
     text: string;
   };
 }
+
+/**
+ * Message item returned by lastIncomingMessages
+ */
+export interface GreenApiIncomingJournalItem {
+  type: string;
+  idMessage: string;
+  timestamp: number;
+  typeMessage: string;
+  chatId: string;
+  textMessage?: string;
+  extendedTextMessage?: {
+    text: string;
+  };
+  senderId?: string;
+  senderName?: string;
+  senderContactName?: string;
+}

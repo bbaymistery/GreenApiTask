@@ -124,6 +124,15 @@ export const useMessages = () => {
       const key = Object.keys(prev).find((k) => isSameChat(k, chatId)) ?? chatId;
       const currentList = prev[key] ?? NO_MESSAGES;
       const merged = deduplicateMessages([...currentList, ...history]);
+
+      const lengthCheck = currentList.length === merged.length
+      const everyCheck = currentList.every((m, i) => m.id === merged[i].id && m.status === merged[i].status && m.text === merged[i].text)
+
+      // If merged list is identical to currentList, bail out without re-rendering
+      if (lengthCheck && everyCheck) {
+        return prev;
+      }
+
       return {
         ...prev,
         [key]: merged,
