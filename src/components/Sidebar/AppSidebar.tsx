@@ -56,6 +56,8 @@ export const AppSidebar: React.FC<AppSidebarProps> = React.memo(({ activeTab, th
           <SettingsIcon size={22} />
           <span className={styles.navLabel}>Settings</span>
         </button>
+
+        <span className={styles.versionLabel} title="Version 1.0.0">v1.0.0</span>
       </div>
     </aside>
   );
