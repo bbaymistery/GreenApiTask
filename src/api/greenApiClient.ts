@@ -106,7 +106,7 @@ export const sendMessage = async (credentials: GreenApiCredentials, payload: Sen
  * @returns {Promise<ReceiveNotificationResponse | null>} Notification payload or null
  */
 export const receiveNotification = async (credentials: GreenApiCredentials, signal?: AbortSignal): Promise<ReceiveNotificationResponse | null> => {
-  const url = buildApiUrl(credentials, 'receiveNotification');
+  const url = `${buildApiUrl(credentials, 'receiveNotification')}?receiveTimeout=10`;
   const response = await fetch(url, { method: 'GET', signal });
 
   if (!response.ok) {
@@ -118,7 +118,16 @@ export const receiveNotification = async (credentials: GreenApiCredentials, sign
     throw new Error(`receiveNotification failed (${response.status}): ${errorText}`);
   }
 
-  return response.json();
+  const text = await response.text();
+  if (!text || text === 'null') {
+    return null;
+  }
+
+  try {
+    return JSON.parse(text);
+  } catch {
+    return null;
+  }
 };
 
 /**

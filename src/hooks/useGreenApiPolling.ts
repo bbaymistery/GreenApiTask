@@ -142,14 +142,7 @@ export const useGreenApiPolling = ({ credentials, onIncomingMessage, enabled = t
       } catch (err: unknown) {
         if (isCancelled) return;
 
-        // Ignore intentional abort errors from cleanup
-        if ((err instanceof DOMException && err.name === 'AbortError') || (err instanceof Error && err.name === 'AbortError')) {
-          return;
-        }
-
-        console.error('[useGreenApiPolling] Polling error:', err);
-
-        // On error (e.g. offline or network blip), back off for pollIntervalMs before retrying
+        // On error or proxy timeout abort, log debug and continue polling
         if (!isCancelled) {
           timerId = setTimeout(poll, pollIntervalMs);
         }

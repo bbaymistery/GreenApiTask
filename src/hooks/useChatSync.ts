@@ -49,46 +49,62 @@ export const useChatSync = ({ activeChatId, credentials, mergeHistoryMessages, u
   useEffect(() => {
     if (!activeChatId || !hasCredentials) return;
 
-    const abortController = new AbortController();
+    let isCancelled = false;
+    let timerId: ReturnType<typeof setTimeout> | null = null;
+    let abortController: AbortController | null = null;
 
     const loadHistory = async () => {
+      if (isCancelled) return;
+      abortController = new AbortController();
+
       try {
         const history = await getChatHistory(
           credentialsRef.current,
           { chatId: activeChatId, count: CHAT_HISTORY_FETCH_COUNT },
           abortController.signal
         );
-        if (!Array.isArray(history) || history.length === 0) return;
 
-        const messages: Message[] = history
-          .filter((item) => item.textMessage || item.extendedTextMessage?.text || item.typeMessage)
-          .map((item) => {
-            const isOutgoing = item.type === 'outgoing';
-            const sender: MessageSender = isOutgoing ? 'me' : 'them';
-            return {
-              id: item.idMessage || crypto.randomUUID(),
-              chatId: activeChatId,
-              sender,
-              text: item.textMessage || item.extendedTextMessage?.text || `[${item.typeMessage}]`,
-              timestamp: item.timestamp ? item.timestamp * 1000 : Date.now(),
-              status: toMessageStatus(item.statusMessage, isOutgoing),
-            };
-          })
-          .sort((a, b) => a.timestamp - b.timestamp);
+        if (isCancelled) return;
 
-        mergeHistoryMessages(activeChatId, messages);
+        if (Array.isArray(history) && history.length > 0) {
+          const messages: Message[] = history
+            .filter((item) => item.textMessage || item.extendedTextMessage?.text || item.typeMessage)
+            .map((item) => {
+              const isOutgoing = item.type === 'outgoing';
+              const sender: MessageSender = isOutgoing ? 'me' : 'them';
+              return {
+                id: item.idMessage || crypto.randomUUID(),
+                chatId: activeChatId,
+                sender,
+                text: item.textMessage || item.extendedTextMessage?.text || `[${item.typeMessage}]`,
+                timestamp: item.timestamp ? item.timestamp * 1000 : Date.now(),
+                status: toMessageStatus(item.statusMessage, isOutgoing),
+              };
+            })
+            .sort((a, b) => a.timestamp - b.timestamp);
 
-        const newest = messages[messages.length - 1];
-        if (newest) updateLastMessage(activeChatId, newest.text, newest.timestamp);
+          mergeHistoryMessages(activeChatId, messages);
+
+          const newest = messages[messages.length - 1];
+          if (newest) updateLastMessage(activeChatId, newest.text, newest.timestamp);
+        }
       } catch (err: unknown) {
         if (err instanceof Error && err.name === 'AbortError') return;
-        console.warn('[useChatSync] Could not load chat history:', err);
+        // Non-critical network warning, will retry on next tick
+      } finally {
+        if (!isCancelled) {
+          timerId = setTimeout(loadHistory, 3000);
+        }
       }
     };
 
     loadHistory();
 
-    // Switching chats or unmounting cancels the in-flight request.
-    return () => abortController.abort();
+    // Switching chats or unmounting cancels the in-flight request and timer.
+    return () => {
+      isCancelled = true;
+      if (timerId !== null) clearTimeout(timerId);
+      if (abortController) abortController.abort();
+    };
   }, [activeChatId, hasCredentials, mergeHistoryMessages, updateLastMessage]);
 };
