@@ -6,6 +6,8 @@ Built with **React 19**, **TypeScript** and **Vite** as a test assignment for th
 [![React](https://img.shields.io/badge/React-19-61dafb?logo=react&logoColor=black)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-6-3178c6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Vite](https://img.shields.io/badge/Vite-8-646cff?logo=vite&logoColor=white)](https://vitejs.dev/)
+[![Telegram](https://img.shields.io/badge/Telegram-@baymistery-2CA5E0?logo=telegram&logoColor=white)](https://t.me/baymistery)
+[![Portfolio](https://img.shields.io/badge/Portfolio-elgun.vercel.app-blue)](https://elgun.vercel.app/)
 
 ---
 
@@ -36,28 +38,59 @@ The task (`htmls/task.png`) asks for a UI for sending and receiving messages in 
 
 ## 2. Quick start (local run)
 
-**Requirements:** Node.js 18+ and npm; a GREEN-API instance in state *authorized* ([console.green-api.com](https://console.green-api.com)).
+### Step 1: Getting GREEN-API credentials
+
+To communicate with WhatsApp through GREEN-API, you need an authorized instance:
+
+1. **Sign up / Sign in**: Go to [console.green-api.com](https://console.green-api.com) and create an account.
+2. **Select or create an instance**: Use the free *Developer* plan instance provided upon registration.
+3. **Scan the QR Code to authorize**:
+   - In your GREEN-API personal dashboard, open your instance and navigate to the **QR Code** section.
+   - Open WhatsApp on your smartphone: navigate to **Settings** (or ⋮ menu) → **Linked Devices** → **Link a Device**.
+   - Point your phone camera at the QR code displayed in the GREEN-API console and scan it.
+   - Wait a few seconds for the instance status to change to **`authorized`**.
+4. **Copy your credentials**:
+   - **`idInstance`**: Your unique numeric instance identifier (e.g. `7107...` or `1101...`).
+   - **`apiTokenInstance`**: Your instance's private access token.
+   - **`apiUrl` / Host**: The API host endpoint assigned to your instance (e.g. `https://7107.api.greenapi.com` or `https://api.green-api.com`).
+5. **Enable Webhook Notifications (Required for receiving messages)**:
+   - In the GREEN-API console, open **Instance Settings**.
+   - Make sure the following notification options are enabled (**yes**):
+     - `incomingWebhook` = **yes**
+     - `outgoingWebhook` = **yes**
+     - `outgoingMessageWebhook` = **yes**
+   *(Enabling these allows the application to retrieve incoming and outgoing messages in real-time via HTTP notification polling).*
+
+---
+
+### Step 2: Clone and install locally
+
+**Requirements:** Node.js 18+ and npm.
 
 ```bash
 git clone https://github.com/bbaymistery/GreenApiTask.git
 cd GreenApiTask
 npm install
-cp .env.example .env     # optional, see below
-npm run dev              # http://localhost:5173
+cp .env.example .env     # optional, configure credentials
+npm run dev              # opens http://localhost:5173
 ```
 
-### Credentials
+### Step 3: Providing credentials to the application
 
-Either type them in the app (**Settings**), or put them in `.env`:
+You can provide your credentials in either of two ways:
 
-```env
-VITE_GREEN_API_URL=https://api.green-api.com      # or your instance host, e.g. https://7107.api.greenapi.com
-VITE_GREEN_ID_INSTANCE=1101000000
-VITE_GREEN_API_TOKEN_INSTANCE=your_api_token
-```
+- **Option A — Web UI Settings modal (Recommended)**:
+  Open the app in your browser, click the **Settings** gear icon in the lower-left navigation rail, fill in `idInstance`, `apiTokenInstance`, and API URL (host), then click **Save**. The values are saved locally in browser `LocalStorage`.
+- **Option B — `.env` file**:
+  Create `.env` by copying `.env.example`:
+  ```env
+  VITE_GREEN_ID_INSTANCE=your_id_instance_here
+  VITE_GREEN_API_TOKEN_INSTANCE=your_api_token_instance_here
+  VITE_GREEN_API_URL=https://api.green-api.com      # or your specific host, e.g. https://7107.api.greenapi.com
+  ```
 
-Resolution order: **Settings (LocalStorage) → `.env`**. Never commit a real token; `.env` is git-ignored.
-Note: `VITE_*` variables are embedded in the browser bundle, so a frontend-only app cannot hide the token from the user of that browser.
+> **Resolution order:** **Settings (LocalStorage) → `.env`**.
+> Never commit real tokens to git. `.env` is ignored by `.gitignore`.
 
 ### Scripts
 
@@ -67,11 +100,6 @@ Note: `VITE_*` variables are embedded in the browser bundle, so a frontend-only 
 | `npm run build`   | Type-check (`tsc -b`) and production build to `dist/` |
 | `npm run preview` | Serve the production build locally                    |
 | `npm run lint`    | Lint with oxlint                                      |
-
-### GREEN-API instance settings
-
-For receiving messages, notifications must be enabled for the instance (console → instance settings):
-`incomingWebhook`, `outgoingWebhook`, `outgoingMessageWebhook` = **yes**. Messages typed on the phone then also appear in the app.
 
 ---
 
@@ -161,11 +189,13 @@ Optionally set the environment variables `VITE_GREEN_API_URL`, `VITE_GREEN_ID_IN
 
 ## 6. Submission checklist (hr@green-api.com)
 
-**Subject:** `Тестовое задание на должность - Фронтенд разработчик React`
+**Subject:** `Job application test assignment - Frontend Developer React`  
 
-1. **Ваше резюме:** Приложить файл PDF *(укажите ваш Telegram для связи)*
-2. **Ссылка на репозиторий GitHub:** [https://github.com/bbaymistery/GreenApiTask](https://github.com/bbaymistery/GreenApiTask)
-3. **Инструкция для локального запуска:** См. [Раздел 2: Quick start (local run)](#2-quick-start-local-run) выше
-4. **Ссылка на работающий сервис:** [https://green-api-task-max-web.netlify.app/](https://green-api-task-max-web.netlify.app/)
-5. **Ссылка на видео-презентацию:** [https://drive.google.com/file/d/1y8Cguj2Qi2MbUGUxfwpdroY9G_suPrjg/view?usp=sharing](https://drive.google.com/file/d/1y8Cguj2Qi2MbUGUxfwpdroY9G_suPrjg/view?usp=sharing)
-6. **Предпочтительный формат работы:** Удаленный (удаленка)
+1. **Resume & Contacts:** Attached PDF resume
+   - **Telegram:** [@baymistery](https://t.me/baymistery) (`https://t.me/baymistery`)
+   - **Portfolio:** [https://elgun.vercel.app/](https://elgun.vercel.app/)
+2. **GitHub Repository:** [https://github.com/bbaymistery/GreenApiTask](https://github.com/bbaymistery/GreenApiTask)
+3. **Local setup instructions:** See [Section 2: Quick start (local run)](#2-quick-start-local-run)
+4. **Live deployment:** [https://green-api-task-max-web.netlify.app/](https://green-api-task-max-web.netlify.app/)
+5. **Video presentation:** [Google Drive Video Demo](https://drive.google.com/file/d/1y8Cguj2Qi2MbUGUxfwpdroY9G_suPrjg/view?usp=sharing)
+6. **Preferred work format:** Remote
