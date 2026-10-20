@@ -11,7 +11,7 @@ Built with **React 19**, **TypeScript** and **Vite** as a test assignment for th
 
 ## 1. The assignment and how it is solved
 
-The task (`task.png`) asks for a UI for sending and receiving messages in MAX / WhatsApp / Telegram using GREEN-API.
+The task (`htmls/task.png`) asks for a UI for sending and receiving messages in MAX / WhatsApp / Telegram using GREEN-API.
 
 | #   | Requirement                                   | Implementation                                                                   |
 | --- | --------------------------------------------- | -------------------------------------------------------------------------------- |
@@ -155,6 +155,7 @@ Optionally set the environment variables `VITE_GREEN_API_URL`, `VITE_GREEN_ID_IN
 
 - **Live demo:** [https://green-api-task-max-web.netlify.app/](https://green-api-task-max-web.netlify.app/)
 - **Repository:** [https://github.com/bbaymistery/GreenApiTask](https://github.com/bbaymistery/GreenApiTask)
+- **Video demo:** [Google Drive Video Demo](https://drive.google.com/file/d/1y8Cguj2Qi2MbUGUxfwpdroY9G_suPrjg/view?usp=sharing)
 
 ---
 
@@ -166,5 +167,5 @@ Optionally set the environment variables `VITE_GREEN_API_URL`, `VITE_GREEN_ID_IN
 2. **Ссылка на репозиторий GitHub:** [https://github.com/bbaymistery/GreenApiTask](https://github.com/bbaymistery/GreenApiTask)
 3. **Инструкция для локального запуска:** См. [Раздел 2: Quick start (local run)](#2-quick-start-local-run) выше
 4. **Ссылка на работающий сервис:** [https://green-api-task-max-web.netlify.app/](https://green-api-task-max-web.netlify.app/)
-5. **Ссылка на видео-презентацию:** [Ссылка на Google Drive с демонстрацией работы]
+5. **Ссылка на видео-презентацию:** [https://drive.google.com/file/d/1y8Cguj2Qi2MbUGUxfwpdroY9G_suPrjg/view?usp=sharing](https://drive.google.com/file/d/1y8Cguj2Qi2MbUGUxfwpdroY9G_suPrjg/view?usp=sharing)
 6. **Предпочтительный формат работы:** Удаленный (удаленка)
