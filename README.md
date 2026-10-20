@@ -11,7 +11,7 @@ Built with **React 19**, **TypeScript** and **Vite** as a test assignment for th
 
 ## 1. The assignment and how it is solved
 
-The task (`htmls/task.png`) asks for a UI for sending and receiving messages in MAX / WhatsApp / Telegram using GREEN-API.
+The task (`task.png`) asks for a UI for sending and receiving messages in MAX / WhatsApp / Telegram using GREEN-API.
 
 | #   | Requirement                                   | Implementation                                                                   |
 | --- | --------------------------------------------- | -------------------------------------------------------------------------------- |
@@ -30,7 +30,7 @@ The task (`htmls/task.png`) asks for a UI for sending and receiving messages in 
 2. **Enter the recipient's phone number** → *New chat* (**+**), pick the country, type the number.
 3. **Write a text message and send it** → `sendMessage`. The message appears immediately (optimistic UI) and is confirmed with the real `idMessage`.
 4. **The recipient replies in the messenger.**
-5. **The reply appears in the chat** → picked up by polling `receiveNotification`, then removed from the queue with `deleteNotification`.
+5. **The reply appears in the chat** → picked up in real-time by HTTP polling (`receiveNotification` / `deleteNotification`) and synced without requiring page reload.
 
 ---
 
@@ -39,10 +39,10 @@ The task (`htmls/task.png`) asks for a UI for sending and receiving messages in 
 **Requirements:** Node.js 18+ and npm; a GREEN-API instance in state *authorized* ([console.green-api.com](https://console.green-api.com)).
 
 ```bash
-git clone https://github.com/bbaymistery/task_green_api_message_max_wp.git
-cd task_green_api_message_max_wp
+git clone https://github.com/bbaymistery/GreenApiTask.git
+cd GreenApiTask
 npm install
-cp .env.example    # optional, see below
+cp .env.example .env     # optional, see below
 npm run dev              # http://localhost:5173
 ```
 
@@ -85,13 +85,15 @@ For receiving messages, notifications must be enabled for the instance (console 
                               └─ deleteNotification (DELETE) after every handled notification
            → useMessages / useChats (state, persisted in LocalStorage)
 
- open chat: useChatSync ── getChatHistory (POST) once, merged without duplicates
+ sync:     useChatSync ── getChatHistory (active chat synchronization)
+                       └─ lastIncomingMessages (multi-conversation delta sync for unread badges)
 ```
 
 Design decisions:
 
-- **One source of live updates.** Polling (`receiveNotification`) is the only live channel; `getChatHistory` runs **once** when a chat is opened. This keeps API traffic low (free-plan rate limits) and avoids duplicate messages.
-- **Recursive `setTimeout`, not `setInterval`**: the next request starts only after the previous one finished.
+- **Dual-Channel Reliability**: HTTP API long-polling (`receiveNotification` + `deleteNotification`) handles real-time notification events. Background delta sync (`lastIncomingMessages` + active `getChatHistory`) prevents dropped or stalled messages under free-tier queue delays, eliminating the need for page reloads.
+- **Recursive `setTimeout`, not `setInterval`**: the next request starts only after the previous one finishes, preventing stampedes and rate limiting.
+- **Render Bailout & Memoization**: State updaters bail out (`return prev`) when data is unchanged, avoiding unnecessary React re-renders and maintaining 60 FPS performance.
 - **Optimistic UI** with temporary ids (`temp-…`), reconciled with the server copy in `deduplicateMessages` (O(n log n), Map-based; identical texts with different ids are never merged).
 - **Debounced persistence** (500 ms, flushed on tab close) of chats and messages to LocalStorage via `useDebouncedStorage`.
 - **Cancellation:** in-flight requests are aborted with `AbortController` when switching chats, changing credentials or unmounting.
@@ -99,13 +101,14 @@ Design decisions:
 
 ### GREEN-API methods used
 
-| Method                | HTTP   | Where                                             |
-| --------------------- | ------ | ------------------------------------------------- |
-| `sendMessage`         | POST   | sending a text message                            |
-| `receiveNotification` | GET    | polling for new messages                          |
-| `deleteNotification`  | DELETE | removing a handled notification from the queue    |
-| `getChatHistory`      | POST   | loading recent messages of an opened chat         |
-| `getStateInstance`    | GET    | available in the API client (authorization check) |
+| Method                 | HTTP   | Where                                                          |
+| ---------------------- | ------ | -------------------------------------------------------------- |
+| `sendMessage`          | POST   | sending a text message                                         |
+| `receiveNotification`  | GET    | polling for incoming message notifications                     |
+| `deleteNotification`   | DELETE | removing a handled notification from the FIFO queue            |
+| `lastIncomingMessages` | GET    | multi-chat journal sync for immediate unread badges & previews |
+| `getChatHistory`       | POST   | loading conversation messages of an opened chat                |
+| `getStateInstance`     | GET    | instance authorization verification check                      |
 
 ### Known limitation: GREEN-API Developer plan
 
@@ -124,14 +127,14 @@ src/
 │   ├── Auth/                    # credentials (Settings) modal
 │   ├── ChatList/                # chat list, search, new-chat modal with phone input
 │   ├── ChatWindow/              # conversation header, message bubbles, input with emoji picker
-│   ├── Sidebar/                 # navigation rail, theme toggle, settings button
+│   ├── Sidebar/                 # navigation rail, theme toggle, settings button, version badge
 │   └── common/                  # Avatar, Modal, Icons
 ├── hooks/
 │   ├── useCredentials.ts        # credentials: Settings (LocalStorage) → .env
 │   ├── useChats.ts              # chat list, active chat, unread badges
 │   ├── useMessages.ts           # messages per chat, optimistic updates, de-duplication
 │   ├── useGreenApiPolling.ts    # receiveNotification / deleteNotification loop
-│   ├── useChatSync.ts           # one-time getChatHistory when a chat is opened
+│   ├── useChatSync.ts           # active chat history & multi-chat journal sync
 │   └── useDebouncedStorage.ts   # debounced JSON persistence to LocalStorage
 ├── styles/                      # reset.css, design tokens (variables.css)
 ├── types/                       # chat, UI and GREEN-API payload types
@@ -147,11 +150,11 @@ src/
 
 ## 5. Deployment
 
-**Vercel** (or Netlify): import the GitHub repo, preset **Vite**, build command `npm run build`, output `dist`.
-Optionally set the environment variables `VITE_GREEN_API_URL`, `VITE_GREEN_ID_INSTANCE`, `VITE_GREEN_API_TOKEN_INSTANCE`; otherwise users enter credentials in Settings.
+**Netlify** / **Vercel**: import the GitHub repo, preset **Vite**, build command `npm run build`, output directory `dist`.
+Optionally set the environment variables `VITE_GREEN_API_URL`, `VITE_GREEN_ID_INSTANCE`, `VITE_GREEN_API_TOKEN_INSTANCE`; otherwise users can enter credentials directly in Settings.
 
-- Live demo: _https://green-api-task-max-web.netlify.app//_
-- Screenshots / video: _add to `docs/` and link here_
+- **Live demo:** [https://green-api-task-max-web.netlify.app/](https://green-api-task-max-web.netlify.app/)
+- **Repository:** [https://github.com/bbaymistery/GreenApiTask](https://github.com/bbaymistery/GreenApiTask)
 
 ---
 
@@ -159,9 +162,9 @@ Optionally set the environment variables `VITE_GREEN_API_URL`, `VITE_GREEN_ID_IN
 
 **Subject:** `Тестовое задание на должность - Фронтенд разработчик React`
 
-1. **CV / Portfolio:** [elgun.vercel.app](https://elgun.vercel.app/) *(Telegram contacts included)*
-2. **GitHub Repository:** [bbaymistery/GreenApiTask](https://github.com/bbaymistery/GreenApiTask)
-3. **Live Deployed App:** [green-api-task-max-web.netlify.app](https://green-api-task-max-web.netlify.app//)
-4. **Screenshots / Video Demo:** _[Add your demo video/screenshots link here]_
-5. **Work Format Preference:** Remote 
-6. **Local Run Guide:** See [Section 2: Quick start (local run)](#2-quick-start-local-run) above
+1. **Ваше резюме:** Приложить файл PDF *(укажите ваш Telegram для связи)*
+2. **Ссылка на репозиторий GitHub:** [https://github.com/bbaymistery/GreenApiTask](https://github.com/bbaymistery/GreenApiTask)
+3. **Инструкция для локального запуска:** См. [Раздел 2: Quick start (local run)](#2-quick-start-local-run) выше
+4. **Ссылка на работающий сервис:** [https://green-api-task-max-web.netlify.app/](https://green-api-task-max-web.netlify.app/)
+5. **Ссылка на видео-презентацию:** [Ссылка на Google Drive с демонстрацией работы]
+6. **Предпочтительный формат работы:** Удаленный (удаленка)
